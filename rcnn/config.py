@@ -103,7 +103,7 @@ default = edict()
 
 # default network
 default.network = 'vgg'
-default.pretrained = '/home/yk/ct/data/imagenet_models/MXNet/vgg16'
+default.pretrained = '/Users/chuck/AIE13/Explore/lession_detect/model/vgg16'
 default.pretrained_epoch = 0
 default.base_lr = 0.001
 
@@ -143,7 +143,7 @@ default.val_max_box = 5
 default.val_iou_th = .5
 default.val_thresh = 0
 default.weight_decay = .0005
-default.groundtruth_file = 'DL_info.csv'
+default.groundtruth_file = 'Kaggle_DL_info.csv'
 default.image_path = ''
 default.validate_at_begin = True
 default.testing = False

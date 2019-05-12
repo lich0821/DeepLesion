@@ -163,7 +163,8 @@ def train_net(args):
     feat_sym = sym.get_internals()['rpn_cls_score_output']
 
     # setup multi-gpu
-    ctx = [mx.gpu(int(i)) for i in args.gpus.split(',')]
+    # ctx = [mx.gpu(int(i)) for i in args.gpus.split(',')]
+    ctx = [mx.cpu()]
     batch_size = len(ctx)
     input_batch_size = config.TRAIN.SAMPLES_PER_BATCH * batch_size
 
@@ -238,17 +239,17 @@ if __name__ == '__main__':
         default.resume = True
     default.accs = dict()
 
-    if default.gpus == '':  # auto select GPU
-        import GPUtil
-        deviceIDs = GPUtil.getAvailable(order='lowest', limit=1, maxMemory=.2)
-        if len(deviceIDs) == 0:
-            deviceIDs = GPUtil.getAvailable(order='lowest', limit=1, maxMemory=.9, maxLoad=1)
+    # if default.gpus == '':  # auto select GPU
+    #     import GPUtil
+    #     deviceIDs = GPUtil.getAvailable(order='lowest', limit=1, maxMemory=.2)
+    #     if len(deviceIDs) == 0:
+    #         deviceIDs = GPUtil.getAvailable(order='lowest', limit=1, maxMemory=.9, maxLoad=1)
 
-        GPUs = GPUtil.getGPUs()
-        default.gpus = str(len(GPUs)-1-deviceIDs[0])
-        logger.info('using gpu '+default.gpus)
-    default.val_gpu = default.gpus[0]
-    # default.prefetch_thread_num = min(default.prefetch_thread_num, config.TRAIN.SAMPLES_PER_BATCH)
+    #     GPUs = GPUtil.getGPUs()
+    #     default.gpus = str(len(GPUs)-1-deviceIDs[0])
+    #     logger.info('using gpu '+default.gpus)
+    # default.val_gpu = default.gpus[0]
+    # # default.prefetch_thread_num = min(default.prefetch_thread_num, config.TRAIN.SAMPLES_PER_BATCH)
 
     train_net(default)
 

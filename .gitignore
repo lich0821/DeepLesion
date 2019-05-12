@@ -3,5 +3,8 @@
 
 log.*
 *.pyc
-__pycache__
 *.so
+
+__pycache__/
+data/
+model/

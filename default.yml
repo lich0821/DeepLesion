@@ -1,4 +1,4 @@
-exp_name: '3DCE 1 image 3 slice'
+exp_name: '3DCE1image3slice'
 gpus: '0'  # '': auto select one idle gpu
 dataset: 'DeepLesion'
 image_set: 'train'
@@ -6,10 +6,10 @@ rand_seed: 23  # -1: don't fix random seed
 prefetch_thread_num: 4  # 0: no prefetch
 begin_epoch: 0  # if > 0, resume from previously trained model according to exp_name; if =0, initialize from pretrained model
 shuffle: True
-use_roidb_cache: True
-dataset_path: '/home/yk/research/data/DeepLesion/'
-groundtruth_file: 'DL_info.csv'
-image_path: '/home/yk/research/data/DeepLesion/Images_png/'
+use_roidb_cache: False
+dataset_path: 'data/'
+groundtruth_file: 'Kaggle_DL_info.csv'
+image_path: 'data/Images_png/'
 
 # optimizer
 e2e_lr: 0.001
