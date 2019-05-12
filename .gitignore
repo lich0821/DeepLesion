@@ -1,0 +1,6 @@
+.*
+!.gitignore
+
+log.*
+*.pyc
+__pycache__
