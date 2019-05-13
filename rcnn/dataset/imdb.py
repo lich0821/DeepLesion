@@ -271,7 +271,7 @@ class IMDB(object):
                 recalls[i] = (gt_overlaps >= t).sum() / float(num_pos)
             ar = recalls.mean()
 
-            # print results
+            # print(results)
             print('average recall for {}: {:.3f}'.format(area_name, ar))
             for threshold, recall in zip(thresholds, recalls):
                 print('recall @{:.2f}: {:.3f}'.format(threshold, recall))

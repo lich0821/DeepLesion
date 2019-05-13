@@ -26,7 +26,7 @@ def load_prep_img(imname, slice_idx, spacing, slice_intv, do_clip=False, num_sli
         c = get_range(mask, margin=0)
         im = im[c[0]:c[1] + 1, c[2]:c[3] + 1, :]
         # mask = mask[c[0]:c[1] + 1, c[2]:c[3] + 1]
-        # print im.shape
+        # print(im.shape)
     else:
         c = [0, im.shape[0]-1, 0, im.shape[1]-1]
 
@@ -55,7 +55,7 @@ def load_multislice_img_16bit_png(imname, slice_idx, slice_intv, do_clip, num_sl
         if imname1 not in data_cache.keys():
             data_cache[imname1] = cv2.imread(fullpath(imname1), -1)
             if data_cache[imname1] is None:
-                print 'file reading error:', imname1
+                print('file reading error:', imname1)
         return data_cache[imname1]
 
     im_cur = _load_data(imname)
@@ -104,7 +104,7 @@ def get_slice_name(imname, delta=0):
     imname1 = '%s%s%03d.png' % (dirname, os.sep, slice_idx + delta)
 
     while not os.path.exists(fullpath(imname1)):  # if the slice is not in the dataset, use its neighboring slice
-        # print 'file not found:', imname1
+        # print('file not found:', imname1)
         delta -= np.sign(delta)
         imname1 = '%s%s%03d.png' % (dirname, os.sep, slice_idx + delta)
         if delta == 0: break
@@ -122,7 +122,7 @@ def load_multislice_img_nifti(imname, slice_idx, slice_intv, do_clip, num_slice)
     # t.tic()
     vol = nib.load(default.image_path + imname).get_data()
     # tt = t.toc()
-    # print '%s, %.2f'% (default.image_path + imname, tt)
+    # print('%s, %.2f'% (default.image_path + imname, tt))
 
     if do_clip:
         mask = get_mask(vol[:,:,slice_idx])
@@ -209,7 +209,7 @@ def im_list_to_blob(ims, use_max_size=False):
     """
     # max_shape = np.array([im.shape for im in ims]).max(axis=0)
     # min_shape = np.array([im.shape for im in ims]).min(axis=0)
-    # print max_shape, min_shape
+    # print(max_shape, min_shape)
     if use_max_size:
         max_shape = np.array([config.MAX_SIZE, config.MAX_SIZE])
     else:

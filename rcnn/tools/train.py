@@ -145,7 +145,7 @@ def train_net(args):
         mx.random.seed(args.rand_seed)
         random.seed(args.rand_seed)
 
-    # print config
+    # print(config)
     logger.info(pprint.pformat(config))
     logger.info(pprint.pformat(args))
 

@@ -140,9 +140,9 @@ def im_detect(predictor, data_batch, data_names, scale):
 from rcnn.utils.evaluation import sens_at_FP
 def my_evaluate_detections(all_boxes, all_gts):
 
-    print 'Sensitivity @', default.val_avg_fp, 'average FPs per image:',
+    print('Sensitivity @', default.val_avg_fp, 'average FPs per image:'),
     res = sens_at_FP(all_boxes[1], all_gts[1], default.val_avg_fp, default.val_iou_th)  # cls 0 is background
-    print res
+    print(res)
     return res[3]  # sens@4FP
 
 
@@ -232,13 +232,13 @@ def pred_eval(predictor, test_data, imdb, vis=False, max_box=-1, thresh=1e-3):
                             .format(i, imdb.num_images, _t['data'].average_time, _t['im_detect'].average_time,
                                     _t['misc'].average_time))
             else:
-                print i,
+                print(i)
                 sys.stdout.flush()
         # logger.info('testing %d/%d data %.4fs net %.4fs post %.4fs' % (i, imdb.num_images, t1, t2, t3))
         i += 1
         _t['data'].tic()
 
-    print
+    print()
     sys.stdout.flush()
     det_file = os.path.join(imdb.cache_path, imdb.name + '_detections.pkl')
     with open(det_file, 'wb') as f:

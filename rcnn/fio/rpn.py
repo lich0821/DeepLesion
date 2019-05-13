@@ -65,7 +65,7 @@ def get_rpn_batch(roidbs):
     data = {'data': tensor_vstack(imgs),
             'im_info': im_info}
     label = {'gt_boxes': tensor_vstack(gt_boxes_all)}
-    # print data['data'].shape
+    # print(data['data'].shape)
 
     return data, label
 

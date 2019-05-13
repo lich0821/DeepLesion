@@ -10,7 +10,8 @@ import os
 def validate(prefix, iter_no):
     logger.info('Validating ...')
     default.testing = True
-    ctx = mx.gpu(int(default.val_gpu))
+    # ctx = mx.gpu(int(default.val_gpu))
+    ctx = mx.cpu()
     # ctx = mx.gpu(int(default.gpus.split(',')[0]))
     epoch = iter_no + 1
     acc = test_rcnn(default.network, default.dataset, default.val_image_set,
@@ -38,12 +39,12 @@ def validate(prefix, iter_no):
     default.accs[str(epoch)] = acc
     epochs = np.sort([int(a) for a in default.accs.keys()]).tolist()
     for e in epochs:
-        print 'Iter %s: %.4f' % (e, default.accs[str(e)])
+        print('Iter %s: %.4f' % (e, default.accs[str(e)]))
     sys.stdout.flush()
 
     if default.keep_best_model and fn_to_del:
         os.remove(fn_to_del)
-        print fn_to_del, 'deleted to keep only the best model'
+        print(fn_to_del, 'deleted to keep only the best model')
         sys.stdout.flush()
 
     default.testing = False

@@ -44,7 +44,7 @@ def draw_loss(logFiles, legend, keywords, smooth=0, ylim=None):
             plt.plot(epochs_dec[:loss.shape[0]], loss)
             legends.append(legend[iFile]+' '+key1)
 
-        print accs
+        print(accs)
 
     plt.xlabel('Epoch')
     plt.ylabel('loss')

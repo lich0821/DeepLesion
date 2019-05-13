@@ -100,7 +100,7 @@ class ProposalOperator(mx.operator.CustomOp):
             # transpose to (1, H, W, 4 * A)
             # reshape to (1 * H * W * A, 4) where rows are ordered by (h, w, a)
             # in slowest to fastest order
-            # print bbox_deltas.shape, height, width, scores.shape[2], scores.shape[3]
+            # print(bbox_deltas.shape, height, width, scores.shape[2], scores.shape[3])
             bbox_deltas = self._clip_pad(bbox_deltas, (height, width))
             bbox_deltas = bbox_deltas.transpose((0, 2, 3, 1)).reshape((-1, 4))
 
@@ -113,7 +113,7 @@ class ProposalOperator(mx.operator.CustomOp):
             scores = scores.transpose((0, 2, 3, 1)).reshape((-1, 1))
 
             # Convert anchors into proposals via bbox transformations
-            # print anchors.shape, bbox_deltas.shape
+            # print(anchors.shape, bbox_deltas.shape)
             proposals = bbox_pred(anchors, bbox_deltas)
 
             # 2. clip predicted boxes to image

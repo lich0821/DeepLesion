@@ -81,7 +81,8 @@ def test_net(prefix, iter_no):
     logger.info('Testing ...')
     default.testing = True
     # ctx = mx.gpu(int(default.val_gpu))
-    ctx = mx.gpu(int(default.gpus.split(',')[0]))
+    # ctx = mx.gpu(int(default.gpus.split(',')[0]))
+    ctx = mx.cpu()
     acc = test_rcnn(default.network, default.dataset, default.test_image_set,
                       default.dataset_path,
                       ctx, prefix, iter_no,
@@ -92,6 +93,7 @@ def test_net(prefix, iter_no):
     prop_file = 'proposals_%s_%s.mat' % (default.test_image_set, default.exp_name)
     savemat(prop_file, default.res_dict)
     default.testing = False
+    print("ACC: ", acc)
 
 if __name__ == '__main__':
     config_file = cfg_from_file('config.yml')
@@ -102,16 +104,16 @@ if __name__ == '__main__':
     merge_a_into_b(default_file, default)
     default.e2e_prefix = 'model/' + default.exp_name
 
-    if default.gpus == '':  # auto select
-        import GPUtil
-        deviceIDs = GPUtil.getAvailable(order='lowest', limit=1, maxLoad=0.5, maxMemory=0.5)
-        GPUs = GPUtil.getGPUs()
-        default.gpus = str(len(GPUs)-1-deviceIDs[0])
-        logger.info('using gpu '+default.gpus)
-    default.val_gpu = default.gpus
+    # if default.gpus == '':  # auto select
+    #     import GPUtil
+    #     deviceIDs = GPUtil.getAvailable(order='lowest', limit=1, maxLoad=0.5, maxMemory=0.5)
+    #     GPUs = GPUtil.getGPUs()
+    #     default.gpus = str(len(GPUs)-1-deviceIDs[0])
+    #     logger.info('using gpu '+default.gpus)
+    # default.val_gpu = default.gpus
     default.prefetch_thread_num = min(default.prefetch_thread_num, config.TRAIN.SAMPLES_PER_BATCH)
 
-    print config
-    print default
+    print(config)
+    print(default)
 
     test_net(default.e2e_prefix, default.begin_epoch)
