@@ -1,10 +1,10 @@
 # Instruction By Chuck
 ## Quick Start
 0. Clone repo
-```
+```sh
 # Find a Place you like
 git clone https://gitee.com/lch0821/DeepLesion
-```sh
+```
 1. Create log directory
 ```sh
 mkdir log
