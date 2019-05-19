@@ -4,7 +4,7 @@ dataset: 'DeepLesion'
 image_set: 'train'
 rand_seed: 23  # -1: don't fix random seed
 prefetch_thread_num: 4  # 0: no prefetch
-begin_epoch: 6  # if > 0, resume from previously trained model according to exp_name; if =0, initialize from pretrained model
+begin_epoch: 0  # if > 0, resume from previously trained model according to exp_name; if =0, initialize from pretrained model
 shuffle: True
 use_roidb_cache: False
 dataset_path: 'data/'
@@ -14,7 +14,7 @@ image_path: 'data/Images_png/'
 # optimizer
 e2e_lr: 0.001
 e2e_lr_step: '4,5'  # decrease lr after e2e_lr_step epochs
-e2e_epoch: 6
+e2e_epoch: 5
 lr_factor: 0.1
 weight_decay: 0.0005
 frequent: 100  # show loss after "frequent" iterations
