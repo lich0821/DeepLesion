@@ -2,12 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-logFiles = [
-'/home/yk/ip239/models/exp20_6/log.traintest_01-03_18-31-46.no fix conv12, fix image bug',
-'/home/yk/ip239/models/exp20_6/log.traintest_01-03_18-32-41.fix conv12, fix image bug',
-# '/home/yk/ip239/models/exp20_4/log.traintest_12-29_18-32-31.no bbox norm'
-]
-legend = ['no fix','fix']
+logFiles = ["/Users/chuck/AIE13/Explore/lession_detect/log/log.traintest_05-17_21-18-01.3DCE1image3slice"]
+legend = ["Train"]
 keywords = ['Epoch', 'Batch', 'RPNLogLoss=', 'RPNL1Loss=', 'RCNNLogLoss=', 'RCNNL1Loss=']
 
 

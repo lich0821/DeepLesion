@@ -205,11 +205,12 @@ def pred_eval(predictor, test_data, imdb, vis=False, max_box=-1, thresh=1e-3):
             indexes = np.where(scores[:, j] > thresh)[0]
             cls_scores = scores[indexes, j, np.newaxis]
             cls_boxes = boxes[indexes, j * 4:(j + 1) * 4]
-            cls_boxes = map_box_back(cls_boxes, crop[2], crop[0], im_info[0,2])
+            # cls_boxes = map_box_back(cls_boxes, crop[2], crop[0], im_info[0,2])
             cls_dets = np.hstack((cls_boxes, cls_scores))
             keep = nms(cls_dets)
             all_boxes[j][i] = cls_dets[keep, :]
-            all_gts[j][i] = map_box_back(gt_boxes, crop[2], crop[0], im_info[0,2])
+            # all_gts[j][i] = map_box_back(gt_boxes, crop[2], crop[0], im_info[0,2])
+            all_gts[j][i] = gt_boxes
 
         if max_per_image > 0:
             image_scores = np.hstack([all_boxes[j][i][:, -1]
@@ -222,11 +223,11 @@ def pred_eval(predictor, test_data, imdb, vis=False, max_box=-1, thresh=1e-3):
 
         if vis:
             boxes_this_image = [[]] + [kept_boxes[j][i] for j in range(1, imdb.num_classes)]
-            vis_all_detection(data_dict['data'].asnumpy(), boxes_this_image, imdb.classes, scale)
+            vis_chuck(data_dict['data'].asnumpy(), all_gts[j][i], boxes_this_image, imdb.classes, scale)
 
         _t['misc'].toc()
 
-        if i % 200 == 0:
+        if i % 50 == 0:
             if i <= 400:
                 logger.info('im_detect: {:d}/{:d} data {:.3f}s im_detect {:.3f}s misc {:.3f}s'
                             .format(i, imdb.num_images, _t['data'].average_time, _t['im_detect'].average_time,
@@ -238,7 +239,6 @@ def pred_eval(predictor, test_data, imdb, vis=False, max_box=-1, thresh=1e-3):
         i += 1
         _t['data'].tic()
 
-    print()
     sys.stdout.flush()
     det_file = os.path.join(imdb.cache_path, imdb.name + '_detections.pkl')
     with open(det_file, 'wb') as f:
@@ -293,7 +293,11 @@ def vis_all_detection(im_array, detections, class_names, scale):
     """
     import matplotlib.pyplot as plt
     import random
+    from ..fio.load_ct_img import windowing_rev, windowing
+
     im = image.transform_inverse(im_array, config.PIXEL_MEANS)
+    im = windowing_rev(im, config.WINDOWING)
+    im = windowing(im, [-175,275]).astype(np.uint8)  # soft tissue window
     plt.imshow(im)
     for j, name in enumerate(class_names):
         if name == '__background__':
@@ -306,11 +310,51 @@ def vis_all_detection(im_array, detections, class_names, scale):
             rect = plt.Rectangle((bbox[0], bbox[1]),
                                  bbox[2] - bbox[0],
                                  bbox[3] - bbox[1], fill=False,
-                                 edgecolor=color, linewidth=3.5)
+                                 edgecolor=color, linewidth=1)
             plt.gca().add_patch(rect)
             plt.gca().text(bbox[0], bbox[1] - 2,
                            '{:s} {:.3f}'.format(name, score),
                            bbox=dict(facecolor=color, alpha=0.5), fontsize=12, color='white')
+    plt.show()
+
+def vis_chuck(im_array, boxes, detections, class_names, scale):
+    import matplotlib.pyplot as plt
+    import random
+    from ..fio.load_ct_img import windowing_rev, windowing
+
+    im = image.transform_inverse(im_array, config.PIXEL_MEANS)
+    im = windowing_rev(im, config.WINDOWING)
+    im = windowing(im, [-175,275]).astype(np.uint8)  # soft tissue window
+    plt.imshow(im)
+
+    color = (1.0,0.0,0.0)
+
+    boxes = boxes * scale
+    for bbox in boxes:
+        rect = plt.Rectangle((bbox[0], bbox[1]),
+                             bbox[2] - bbox[0],
+                             bbox[3] - bbox[1], fill=False,
+                             edgecolor=color, linewidth=2)
+        plt.gca().add_patch(rect)
+        plt.gca().text(bbox[0], bbox[3] + 5, '{:s}'.format("Doctor"),
+                           bbox=dict(facecolor=color, alpha=0.3), fontsize=12, color='white')
+
+    for j, name in enumerate(class_names):
+        if name == '__background__':
+            continue
+        color = (0.0, 1.0, 0.0)  # generate a random color
+        dets = detections[j]
+        for det in dets:
+            bbox = det[:4] * scale
+            score = det[-1]
+            rect = plt.Rectangle((bbox[0], bbox[1]),
+                                 bbox[2] - bbox[0],
+                                 bbox[3] - bbox[1], fill=False,
+                                 edgecolor=color, linewidth=1)
+            plt.gca().add_patch(rect)
+            plt.gca().text(bbox[0], bbox[1] - 2,
+                           '{:s} {:.3f}'.format(name, score),
+                           bbox=dict(facecolor=color, alpha=0.3), fontsize=12, color='white')
     plt.show()
 
 

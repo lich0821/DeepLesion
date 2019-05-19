@@ -155,6 +155,6 @@ def transform_inverse(im_tensor, pixel_means):
     im_tensor = im_tensor.transpose(channel_swap)
     im = im_tensor[0]
     assert im.shape[2] == 3
-    im += pixel_means[[2, 1, 0]]
+    im += config.PIXEL_MEANS
     im = im.astype(np.uint8)
     return im
