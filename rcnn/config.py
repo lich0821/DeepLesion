@@ -1,7 +1,7 @@
 import numpy as np
 from easydict import EasyDict as edict
 import yaml
-
+import os
 
 config = edict()
 
@@ -103,7 +103,7 @@ default = edict()
 
 # default network
 default.network = 'vgg'
-default.pretrained = '/Users/chuck/AIE13/Explore/lession_detect/model/vgg16'
+default.pretrained = os.path.dirname(os.path.abspath(__file__)) + "/../model/vgg16"
 default.pretrained_epoch = 0
 default.base_lr = 0.001
 
@@ -135,7 +135,7 @@ default.e2e_lr_step = '7'
 default.gpus = '0'
 default.val_gpu = default.gpus
 default.val_image_set = 'val'
-default.val_vis = True
+default.val_vis = False
 default.val_shuffle = False
 default.val_has_rpn = True
 default.proposal = 'rpn'
