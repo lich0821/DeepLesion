@@ -1,13 +1,67 @@
+# Instruction By Chuck
+## Quick Start
+1. Create log directory
+```sh
+mkdir log
+```
+2. Download vggnet pretrained model
+```sh
+mkdir model
+cd model
+# Download vgg16-0000.params into model/
+wget http://data.mxnet.io/models/imagenet/vgg/vgg16-0000.params
+cd ..
+```
+3. Put dataset into the right place
+```sh
+mkdir -p data/Images_png
+# Unzip 8G dataset and put them into Images_png
+```
+4. Build necessary libs
+```sh
+# cd to root of project and then build
+make
+```
+5. Set up python environment
+
+**Python 2.7**
+```sh
+pip install mxnet
+pip install pyyml
+pip install matplotlib
+# After installing mxnet, numpy1.14 would be installed, need to change to numpy1.16
+pip install numpy==1.16
+```
+
+## Configurations
+### `default.yml`
+* [Line 7] `begin_epoch: 0`: Control start epoch, should be set to the best model number(Check model/ to find out. You'll see something like 3DCE1image3slice-`xxxx`.params) when test.
+* [line 17] `e2e_epoch: 5`: Epochs for training.
+* [line 26] `val_max_box`: How many boxes will be kept
+
+### `rcnn/config.py`
+* [line 138] `default.val_vis = True`: Show detections or not
+
+## Train
+```
+./train.sh
+```
+
+## Test
+```
+./test.sh
+```
+
 ## 3D Context Enhanced Region-based Convolutional Neural Network (3DCE)
 
 Developed by Ke Yan (ke.yan@nih.gov, [yanke23.com](http://yanke23.com)), Imaging Biomarkers and Computer-Aided Diagnosis Laboratory, National Institutes of Health Clinical Center
 
-3DCE [1] is an object detection framework which makes use of the 3D context in volumetric image data (and maybe video data) efficiently. 
+3DCE [1] is an object detection framework which makes use of the 3D context in volumetric image data (and maybe video data) efficiently.
 
 It was primarily designed for lesion detection in 3D CT images. However, the project also contains 2D Faster RCNN and R-FCN, which can be used for other object detection tasks.
 
 Adapted from the code in [https://github.com/sxjscience/mx-rcnn-1](https://github.com/sxjscience/mx-rcnn-1)
- 
+
 ## Introduction
 * Implemented frameworks: Faster RCNN, R-FCN, Improved R-FCN [1], 3DCE R-FCN (see rcnn/symbol/symbol_vgg.py and tools/train.py)
 * For the **DeepLesion** dataset [2,3,4], we:
@@ -24,7 +78,7 @@ Adapted from the code in [https://github.com/sxjscience/mx-rcnn-1](https://githu
     * Previous snapshots can be resumed by simply setting "exp_name" and "begin_epoch" in default.yml
     * When running train.sh, it will generate log files named with "exp_name"
     * Images can be prefetched from hard disk to speed up
-   
+
 ##
 
 #### Requirements
